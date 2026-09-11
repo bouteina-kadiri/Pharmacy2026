@@ -61,6 +61,6 @@ if (isMainModule(import.meta.url)) {
 }
 
 /**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ * Request handler used by the Angular CLI during development and server-side rendering.
  */
 export const reqHandler = createNodeRequestHandler(app);
