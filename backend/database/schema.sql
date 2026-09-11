@@ -1,0 +1,16 @@
+CREATE TABLE pharmacies (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE clients (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  pharmacy_id BIGINT NOT NULL REFERENCES pharmacies(id) ON DELETE RESTRICT,
+  name VARCHAR(150) NOT NULL,
+  last_name VARCHAR(150) NOT NULL,
+  date_of_birth DATE NOT NULL,
+  prescription TEXT,
+  dosage TEXT,
+  address TEXT,
+  phone_number VARCHAR(30)
+);

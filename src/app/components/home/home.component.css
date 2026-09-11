@@ -1,0 +1,33 @@
+/* Hero Section */
+.hero {
+  background: url('/assets/pharmacyBanner.jpeg') no-repeat center center;
+  background-size: cover; /* Covers the area properly */
+  background-blend-mode: normal; /* Prevents unnecessary filters */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+/* Hero Content Box */
+.hero-content {
+  background: rgba(255, 255, 255, 0.85); /* White box for readability */
+  padding: 30px 50px;
+  border-radius: 10px;
+  max-width: 60%;
+  text-align: center;
+}
+
+/* Hero Heading */
+.hero h1 {
+  font-size: 42px;
+  font-weight: bold;
+  color: #0b5ed7;
+  margin-bottom: 10px;
+}
+
+/* Hero Subtext */
+.hero p {
+  font-size: 20px;
+  color: black;
+}
