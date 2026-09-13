@@ -1,19 +1,20 @@
-<nav class="navbar">
-  <div class="logo-container">
-    <img src="assets/logo.png" alt="My Logo" class="logo" />
-  </div>
+<nav class="navbar" aria-label="Main navigation">
+  <a class="logo-container" routerLink="/" aria-label="Pharmacy home" (click)="isMenuOpen = false">
+    <img src="assets/logoPH.webp" alt="" class="logo" width="400" height="400" />
+  </a>
 
-  <!-- Hamburger Menu Button -->
-  <div class="hamburger-menu" (click)="toggleMenu()">
-    &#9776;  <!-- ☰ icon -->
-  </div>
+  <button class="hamburger-menu" type="button" (click)="toggleMenu()"
+    [attr.aria-expanded]="isMenuOpen" aria-controls="main-nav-links"
+    [attr.aria-label]="isMenuOpen ? 'Close navigation' : 'Open navigation'">
+    <span aria-hidden="true">{{ isMenuOpen ? '×' : '☰' }}</span>
+  </button>
 
-  <!-- Nav Links -->
-  <ul class="nav-links" [class.open]="isMenuOpen">
-    <li (click)="goToHome()">HOME</li>
-    <li (click)="goToLogin()">Log In</li>
-    <li (click)="goToAbout()">ABOUT</li>
-    <li (click)="goToServices()">SERVICES</li>
-    <li (click)="goToContact()">CONTACT</li>
+  <ul id="main-nav-links" class="nav-links" [class.open]="isMenuOpen">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">Home</a></li>
+    <li><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">Log in</a></li>
+    <li><a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">About</a></li>
+    <li><a routerLink="/services" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">Services</a></li>
+    <li><a routerLink="/prescription-status" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">Prescription status</a></li>
+    <li><a routerLink="/contact" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="isMenuOpen = false">Contact</a></li>
   </ul>
 </nav>

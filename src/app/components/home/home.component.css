@@ -1,33 +1,44 @@
-/* Hero Section */
+:host { display: block; color: #fff; }
 .hero {
-  background: url('/assets/pharmacyBanner.jpeg') no-repeat center center;
-  background-size: cover; /* Covers the area properly */
-  background-blend-mode: normal; /* Prevents unnecessary filters */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  min-height: calc(100vh - 148px);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 28%, #b4dcf055 0%, transparent 47%), linear-gradient(180deg, #74a6d5 0%, #5688c0 52%, #3e6499 100%);
 }
-/* Hero Content Box */
-.hero-content {
-  background: rgba(255, 255, 255, 0.85); /* White box for readability */
-  padding: 30px 50px;
-  border-radius: 10px;
-  max-width: 60%;
-  text-align: center;
+.hero-content { position: relative; padding: 0 0 24px; }
+.hero h1 { font-size: clamp(32px, 4.5vw, 60px); text-shadow: 0 2px 18px #203e6240; }
+.hero p { max-width: 660px; margin: 0 auto; text-wrap: balance; text-shadow: 0 1px 8px #203e6260; }
+.pharmacy-emblem {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(300px, 100%);
+  height: 260px;
+  margin: 0 auto 32px;
+  border-radius: 50%;
+  outline-offset: 6px;
+  animation: emblem-arrive 3s ease-in-out;
 }
-
-/* Hero Heading */
-.hero h1 {
-  font-size: 42px;
-  font-weight: bold;
-  color: #0b5ed7;
-  margin-bottom: 10px;
+.pharmacy-emblem::before {
+  content: '';
+  position: absolute;
+  inset: 18px 30px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #e6f7ff70, #b9eaff30 48%, transparent 72%);
+  box-shadow: 0 0 70px #c2f1ff40;
+  transition: transform 600ms ease, box-shadow 600ms ease;
 }
-
-/* Hero Subtext */
-.hero p {
-  font-size: 20px;
-  color: black;
+.emblem-art { position: relative; width: 160px; height: 220px; overflow: hidden; mix-blend-mode: screen; transition: transform 600ms ease; }
+.emblem-art img { position: absolute; width: 400px; height: 400px; max-width: none; left: -120px; top: -90px; filter: invert(1); }
+.pharmacy-emblem:hover .emblem-art, .pharmacy-emblem:focus-visible .emblem-art { transform: translateY(-8px) rotate(-4deg); }
+.pharmacy-emblem:hover::before, .pharmacy-emblem:focus-visible::before { transform: scale(1.08); box-shadow: 0 0 90px #d3f3ff70; }
+.pharmacy-emblem:focus-visible { outline: 2px solid #fff; }
+@keyframes emblem-arrive { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@media (max-width: 600px) {
+  .hero { padding: 40px 24px 56px; }
+  .pharmacy-emblem { height: 230px; margin-bottom: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pharmacy-emblem { animation: none; }
+  .emblem-art, .pharmacy-emblem::before { transition: none; }
+  .pharmacy-emblem:hover .emblem-art, .pharmacy-emblem:focus-visible .emblem-art, .pharmacy-emblem:hover::before, .pharmacy-emblem:focus-visible::before { transform: none; }
 }

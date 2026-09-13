@@ -1,32 +1,92 @@
-<div class="login-container">
-  <!-- Left side with welcome message -->
-  <div class="left-section">
-    <h1>Welcome Back!</h1>
-  </div>
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <div class="welcome-panel">
+      <span class="pharmacy-mark" aria-hidden="true">+</span>
+      <p class="eyebrow">YOUR COMMUNITY PHARMACY</p>
+      <h2>A little care.<br />A healthier you.</h2>
+      <p>Welcome back to your pharmacy. We're happy to see you again.</p>
+      <div class="welcome-note">Here for you, every step of the way.</div>
+    </div>
 
-  <!-- Right side with login form -->
-  <div class="right-section">
-    <h2>Login</h2>
-    <p>Welcome back! Please login to your account.</p>
+    <div class="form-panel">
+      @if (user) {
+      <p class="eyebrow">YOUR ACCOUNT</p>
+      <h1 id="login-title">Welcome, {{ user.name }}</h1>
+      <p class="feedback success" role="status">You are signed in.</p>
+      <p class="intro">{{ user.email }}</p>
+      @if (errorMessage) { <p class="feedback error" role="alert">{{ errorMessage }}</p> }
+      <a routerLink="/home" class="account-link">Return to home →</a>
+      <button class="sign-in" type="button" (click)="logout()" [disabled]="isSubmitting">Sign out</button>
+      } @else {
+      <p class="eyebrow">{{ isSignup ? 'NEW CLIENT' : 'WELCOME BACK' }}</p>
+      <h1 id="login-title">{{ isSignup ? 'Create your account' : 'Sign in to your account' }}</h1>
+      <p class="intro">{{ isSignup ? 'Sign up first to access your pharmacy account.' : 'Enter your email address and password to continue.' }}</p>
 
-    <form>
-      <label for="email">User Name</label>
-      <input type="email" id="email" placeholder="username@gmail.com" required />
+      <form #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)" novalidate [attr.aria-busy]="isSubmitting">
+        @if (isSignup) {
+          <div class="field">
+            <label for="name">First name</label>
+            <input id="name" name="name" autocomplete="given-name" [(ngModel)]="name" #nameInput="ngModel" required maxlength="150" pattern=".*\S.*" [readOnly]="isSubmitting" />
+            @if (nameInput.invalid && nameInput.touched) { <p class="field-error">Please enter your first name.</p> }
+          </div>
+          <div class="field">
+            <label for="lastName">Last name</label>
+            <input id="lastName" name="lastName" autocomplete="family-name" [(ngModel)]="lastName" #lastNameInput="ngModel" required maxlength="150" pattern=".*\S.*" [readOnly]="isSubmitting" />
+            @if (lastNameInput.invalid && lastNameInput.touched) { <p class="field-error">Please enter your last name.</p> }
+          </div>
+        }
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="username" inputmode="email"
+            placeholder="you@example.com" [(ngModel)]="email" #emailInput="ngModel" required email maxlength="254"
+            [readOnly]="isSubmitting" [attr.aria-invalid]="emailInput.invalid && emailInput.touched"
+            [attr.aria-describedby]="emailInput.invalid && emailInput.touched ? 'email-error' : null" />
+          @if (emailInput.invalid && emailInput.touched) {
+            <p id="email-error" class="field-error">Please enter a valid email address.</p>
+          }
+        </div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="********" required />
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input id="password" name="password" [type]="showPassword ? 'text' : 'password'"
+              [autocomplete]="isSignup ? 'new-password' : 'current-password'" placeholder="Enter your password" [(ngModel)]="password"
+              #passwordInput="ngModel" required [minlength]="isSignup ? 12 : 1" maxlength="128" [readOnly]="isSubmitting"
+              [attr.aria-invalid]="passwordInput.invalid && passwordInput.touched"
+              [attr.aria-describedby]="passwordInput.invalid && passwordInput.touched ? 'password-error' : null" />
+            <button type="button" class="password-toggle" (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword">{{ showPassword ? 'Hide' : 'Show' }}</button>
+          </div>
+          @if (passwordInput.invalid && passwordInput.touched) {
+            <p id="password-error" class="field-error">{{ isSignup ? 'Use 12–128 characters for your password.' : 'Please enter your password.' }}</p>
+          }
+        </div>
 
-      <div class="options">
-        <label>
-          <input type="checkbox" /> Remember Me
-        </label>
-        <a href="#">Forgot Password?</a>
-      </div>
-
-      <button type="submit">Login</button>
-
-      <p class="signup-text">New User? <a href="#">Signup</a></p>
-    </form>
-  </div>
-</div>
-
+        @if (isSignup) {
+          <p class="help-note">Use 12–128 characters for your password.</p>
+          <div class="field">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" name="confirmPassword" [type]="showPassword ? 'text' : 'password'" autocomplete="new-password" [(ngModel)]="confirmPassword" #confirmInput="ngModel" required [readOnly]="isSubmitting" />
+            @if (confirmInput.touched && confirmPassword !== password) { <p class="field-error">The passwords do not match.</p> }
+          </div>
+        }
+        @if (errorMessage) {
+          <p class="feedback error" role="alert">{{ errorMessage }}</p>
+        }
+        @if (successMessage) {
+          <p class="feedback success" role="status">{{ successMessage }}</p>
+        }
+        <button class="sign-in" type="submit" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Please wait…' : (isSignup ? 'Create account' : 'Sign in') }} <span aria-hidden="true">→</span>
+        </button>
+      </form>
+      <p class="help-note">
+        {{ isSignup ? 'Already have an account?' : 'New client? Sign up first.' }}
+        <a [routerLink]="isSignup ? '/login' : '/signup'">{{ isSignup ? 'Sign in' : 'Create an account' }}</a>
+      </p>
+      <p class="help-note">Need help signing in? Please contact your pharmacy.</p>
+      }
+    </div>
+  </section>
+</main>

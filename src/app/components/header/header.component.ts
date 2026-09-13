@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -14,7 +15,6 @@ export class HeaderComponent {
   // Toggle Menu
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    console.log("Menu toggled:", this.isMenuOpen);
   }
 
   // Navigation Methods
@@ -35,6 +35,11 @@ export class HeaderComponent {
 
   goToServices() {
     this.router.navigate(['/services']);
+    this.isMenuOpen = false;
+  }
+
+  goToPrescriptionStatus() {
+    this.router.navigate(['/prescription-status']);
     this.isMenuOpen = false;
   }
 

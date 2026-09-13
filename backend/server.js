@@ -3,9 +3,9 @@ const cors = require('cors');
 const pool = require('./database');
 
 const app = express();
-const PORT = 8080;
+const PORT = Number(process.env.PORT || 8080);
 
-app.use(cors());
+app.use(cors({ origin: ['http://localhost:4200', 'http://localhost:4201', 'http://127.0.0.1:4200', 'http://127.0.0.1:4201'], credentials: true }));
 app.use(express.json());
 
 // Test route
@@ -43,8 +43,36 @@ app.get('/api/clients', async (req, res, next) => {
   }
 });
 
+// Client-facing prescription pickup status
+app.get('/api/prescription-status', async (req, res, next) => {
+  const firstName = req.query.firstName?.trim();
+  const lastName = req.query.lastName?.trim();
+
+  if (!firstName || !lastName) {
+    return res.status(400).json({ message: 'firstName and lastName are required.' });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT name, last_name, prescription_ready
+       FROM clients
+       WHERE LOWER(name) = LOWER($1) AND LOWER(last_name) = LOWER($2)
+       LIMIT 1`,
+      [firstName, lastName]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'No client was found with that name.' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.post('/api/clients', async (req, res, next) => {
-  const { pharmacyId, name, lastName, dateOfBirth, prescription, dosage, address, phoneNumber } = req.body;
+  const { pharmacyId, name, lastName, dateOfBirth, prescription, dosage, prescriptionReady, address, phoneNumber } = req.body;
 
   if (!pharmacyId || !name || !lastName || !dateOfBirth) {
     return res.status(400).json({ message: 'pharmacyId, name, lastName, and dateOfBirth are required.' });
@@ -53,10 +81,10 @@ app.post('/api/clients', async (req, res, next) => {
   try {
     const result = await pool.query(
       `INSERT INTO clients
-        (pharmacy_id, name, last_name, date_of_birth, prescription, dosage, address, phone_number)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        (pharmacy_id, name, last_name, date_of_birth, prescription, dosage, prescription_ready, address, phone_number)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
-      [pharmacyId, name, lastName, dateOfBirth, prescription || null, dosage || null, address || null, phoneNumber || null]
+      [pharmacyId, name, lastName, dateOfBirth, prescription || null, dosage || null, prescriptionReady === true, address || null, phoneNumber || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -64,45 +92,15 @@ app.post('/api/clients', async (req, res, next) => {
   }
 });
 
-// Get users
-app.get('/api/users/all', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Test User',
-      email: 'test@example.com'
-    }
-  ]);
-});
-
-// Login
-app.post('/api/users/login', (req, res) => {
-  const { email, password } = req.body;
-
-  // Temporary test login
-  if (email === 'test@example.com' && password === '123456') {
-    return res.json({
-      success: true,
-      message: 'Login successful',
-      user: {
-        id: 1,
-        name: 'Test User',
-        email: 'test@example.com'
-      }
-    });
-  }
-
-  res.status(401).json({
-    success: false,
-    message: 'Invalid email or password'
-  });
-});
+app.use('/api/users', require('./auth').createAuthRouter(pool));
 
 app.use((error, req, res, next) => {
   console.error(error);
   res.status(500).json({ message: 'Internal server error.' });
 });
 
-app.listen(PORT, () => {
+if (require.main === module) app.listen(PORT, '127.0.0.1', () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });
+
+module.exports = app;

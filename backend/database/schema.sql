@@ -11,6 +11,7 @@ CREATE TABLE clients (
   date_of_birth DATE NOT NULL,
   prescription TEXT,
   dosage TEXT,
+  prescription_ready BOOLEAN NOT NULL DEFAULT FALSE,
   address TEXT,
   phone_number VARCHAR(30)
 );

@@ -1,0 +1,37 @@
+.status-page {
+  display: grid;
+  min-height: calc(100vh - 150px);
+  place-items: center;
+  padding: 48px 20px 90px;
+  background: #000;
+}
+
+.status-card {
+  width: min(100%, 500px);
+  padding: 36px;
+  border-radius: 16px;
+  background: #171717;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.eyebrow { margin: 0; color: #fff; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; }
+h1 { margin: 8px 0 12px; color: #fff; }
+.intro { margin: 0 0 24px; color: #ccc; }
+
+form { display: grid; gap: 8px; }
+label { margin-top: 8px; font-weight: 600; color: #fff; }
+input { padding: 12px; border: 1px solid #555; border-radius: 8px; font: inherit; }
+input:focus { outline: 3px solid rgba(255, 255, 255, 0.2); border-color: #fff; }
+button { margin-top: 16px; padding: 12px; border: 0; border-radius: 8px; background: #484848; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+button:disabled { opacity: 0.7; cursor: wait; }
+.message { margin: 24px 0 0; padding: 16px; border-radius: 8px; }
+.message p { margin: 8px 0 0; }
+.ready { color: #fff; background: #303030; }
+.not-ready { color: #fff; background: #303030; }
+.error { color: #fff; background: #303030; }
+
+@media (max-width: 480px) { .status-card { padding: 26px 20px; } }
+
+button:hover:not(:disabled) { background: #606060; }
+button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.status-card { border: 1px solid #444; }

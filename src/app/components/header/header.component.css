@@ -1,71 +1,69 @@
-/* Default Navbar */
+:host { display: block; position: relative; z-index: 100; }
 .navbar {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #198754;
+  gap: 24px;
+  min-height: 76px;
+  padding: 12px clamp(20px, 5vw, 80px);
+  background: var(--chrome-bg);
+  color: #fff;
+  border-bottom: 1px solid #ffffff24;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.logo-container { display: block; position: relative; width: 48px; height: 60px; overflow: hidden; flex-shrink: 0; border-radius: 6px; }
+/* Crop the original white margins in the layout; preserve the source image. */
+.logo { display: block; position: absolute; width: 128px; height: 128px; max-width: none; left: -40px; top: -34px; filter: invert(1); mix-blend-mode: screen; }
+.nav-links { display: flex; align-items: center; gap: clamp(4px, 1.4vw, 24px); list-style: none; margin: 0; padding: 0; }
+.nav-links li { font-size: 13px; font-weight: 400; }
+.nav-links a {
   position: relative;
+  display: block;
+  padding: 13px 12px;
+  border-radius: 9px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: .15px;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 180ms ease;
+}
+.nav-links a.active::after { transform: scaleX(.45); }
+@media (hover: hover) {
+  .nav-links a:hover { background: #ffffff1c; transform: translateY(-2px); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+}
+.nav-links a:focus-visible, .logo-container:focus-visible, .hamburger-menu:focus-visible { outline: 2px solid white; outline-offset: 4px; }
+.hamburger-menu { display: none; border: 0; background: transparent; color: white; width: 44px; height: 44px; font-size: 26px; cursor: pointer; }
+@media (max-width: 800px) {
+  .navbar { gap: 12px; min-height: 68px; padding: 10px 20px; }
+  .hamburger-menu { display: grid; place-items: center; }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 4px; padding: 16px 20px 24px; background: var(--chrome-bg); border-bottom: 1px solid #ffffff24; text-align: left; box-shadow: 0 18px 30px #0003; }
+  .nav-links.open { display: flex; }
+  .nav-links li { font-size: 17px; }
+  .nav-links a { padding: 14px 12px; }
+  .nav-links a::after { right: auto; width: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a, .nav-links a::after { transition: none; }
+  .nav-links a:hover { transform: none; }
 }
 
-/* Logo */
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-/* Hamburger Menu */
-.hamburger-menu {
-  display: none; /* Hidden by default on larger screens */
-  cursor: pointer;
-  font-size: 28px;
-  color: white;
-  padding: 10px;
-}
-
-/* Navigation Links */
-.nav-links {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-}
-
-.nav-links li {
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* ✅ Mobile Responsive Styles */
-@media (max-width: 768px) {
-  .hamburger-menu {
-    display: block; /* Show hamburger icon in mobile */
-  }
-
-  .nav-links {
-    display: none; /* Hide links by default */
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background: #198754;
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .nav-links.open {
-    display: flex; /* Show links when menu is toggled */
-  }
-
-  .nav-links li {
-    padding: 10px 0;
-    color: white;
-  }
+.logo-container { transition: transform 250ms ease; }
+.logo-container:hover, .logo-container:focus-visible { transform: translateY(-2px) rotate(-5deg); }
+@media (prefers-reduced-motion: reduce) {
+  .logo-container { transition: none; }
+  .logo-container:hover, .logo-container:focus-visible { transform: none; }
 }

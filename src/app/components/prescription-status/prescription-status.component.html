@@ -1,0 +1,27 @@
+<main class="status-page">
+  <section class="status-card" aria-labelledby="status-title">
+    <p class="eyebrow">PHARMACY NOOR</p>
+    <h1 id="status-title">Prescription pickup status</h1>
+    <p class="intro">Enter your name to check whether your prescription is ready for pickup.</p>
+
+    <form (ngSubmit)="checkStatus()">
+      <label for="firstName">First name</label>
+      <input id="firstName" name="firstName" [(ngModel)]="firstName" autocomplete="given-name" required />
+
+      <label for="lastName">Last name</label>
+      <input id="lastName" name="lastName" [(ngModel)]="lastName" autocomplete="family-name" required />
+
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Checking…' : 'Check prescription' }}
+      </button>
+    </form>
+
+    <p *ngIf="error" class="message error" role="alert">{{ error }}</p>
+
+    <div *ngIf="result" class="message" [class.ready]="result.prescription_ready" [class.not-ready]="!result.prescription_ready">
+      <strong>Hello, {{ result.name }} {{ result.last_name }}.</strong>
+      <p *ngIf="result.prescription_ready">Your prescription is ready for pickup.</p>
+      <p *ngIf="!result.prescription_ready">Your prescription is not ready yet. Please check again later.</p>
+    </div>
+  </section>
+</main>
