@@ -1,10 +1,10 @@
 :host { display: block; }
 .footer {
-  background: var(--chrome-bg);
+  background: transparent;
   color: #fff;
   text-align: center;
   padding: 22px 20px;
   width: 100%;
-  border-top: 1px solid #ffffff24;
+  border-top: 0;
   font-size: 13px;
 }
