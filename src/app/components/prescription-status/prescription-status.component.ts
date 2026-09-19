@@ -35,9 +35,15 @@ export class PrescriptionStatusComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = error.status === 404
-          ? 'We could not find a client with that name.'
-          : 'We could not check your prescription right now. Please try again later.';
+        if (error.status === 401) {
+          this.error = 'Please sign in before checking your prescription.';
+        } else if (error.status === 403) {
+          this.error = 'Enter the same first and last name used for your account.';
+        } else if (error.status === 404) {
+          this.error = 'No prescription record is linked to your account yet. Please contact your pharmacy.';
+        } else {
+          this.error = 'We could not check your prescription right now. Please try again later.';
+        }
         this.isLoading = false;
       }
     });

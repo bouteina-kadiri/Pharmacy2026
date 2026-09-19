@@ -2,10 +2,18 @@ const { Router } = require('express');
 const { randomBytes, scrypt, timingSafeEqual, createHash } = require('node:crypto');
 const { promisify } = require('node:util');
 const derive = promisify(scrypt);
-const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/api/users' };
+const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/' };
 const digest = value => createHash('sha256').update(value).digest('hex');
 const sessionToken = req => (req.headers.cookie || '').split(';').map(v => v.trim()).find(v => v.startsWith('pharmacy_session='))?.slice(17);
 const publicUser = user => ({ id: user.id, name: user.name, lastName: user.last_name, email: user.email });
+
+async function getAuthenticatedUser(pool, req) {
+  const token = sessionToken(req);
+  if (!token) return null;
+  const result = await pool.query(`SELECT a.* FROM client_accounts a JOIN client_sessions s ON s.account_id = a.id
+    WHERE s.token_hash = $1 AND s.expires_at > NOW()`, [digest(token)]);
+  return result.rows[0] || null;
+}
 
 function createAuthRouter(pool) {
   const router = Router();
@@ -62,19 +70,17 @@ function createAuthRouter(pool) {
       await pool.query('DELETE FROM client_sessions WHERE expires_at <= NOW()');
       const token = randomBytes(32).toString('hex');
       await pool.query("INSERT INTO client_sessions (token_hash, account_id, expires_at) VALUES ($1, $2, NOW() + INTERVAL '8 hours')", [digest(token), user.id]);
+      res.clearCookie('pharmacy_session', { ...cookieOptions, path: '/api/users' });
       res.cookie('pharmacy_session', token, { ...cookieOptions, maxAge: 8 * 60 * 60 * 1000 });
       res.json({ success: true, user: publicUser(user) });
     } catch (error) { next(error); }
   });
 
   router.get('/me', async (req, res, next) => {
-    const token = sessionToken(req);
-    if (!token) return res.status(401).json({ message: 'Please sign in.' });
     try {
-      const result = await pool.query(`SELECT a.* FROM client_accounts a JOIN client_sessions s ON s.account_id = a.id
-        WHERE s.token_hash = $1 AND s.expires_at > NOW()`, [digest(token)]);
-      if (!result.rowCount) return res.status(401).json({ message: 'Please sign in again.' });
-      res.json({ user: publicUser(result.rows[0]) });
+      const user = await getAuthenticatedUser(pool, req);
+      if (!user) return res.status(401).json({ message: 'Please sign in.' });
+      res.json({ user: publicUser(user) });
     } catch (error) { next(error); }
   });
 
@@ -83,9 +89,10 @@ function createAuthRouter(pool) {
       const token = sessionToken(req);
       if (token) await pool.query('DELETE FROM client_sessions WHERE token_hash = $1', [digest(token)]);
       res.clearCookie('pharmacy_session', cookieOptions);
+      res.clearCookie('pharmacy_session', { ...cookieOptions, path: '/api/users' });
       res.json({ success: true });
     } catch (error) { next(error); }
   });
   return router;
 }
-module.exports = { createAuthRouter };
+module.exports = { createAuthRouter, getAuthenticatedUser };

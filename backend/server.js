@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('./database');
+const { createAuthRouter, getAuthenticatedUser } = require('./auth');
 
 const app = express();
 const PORT = Number(process.env.PORT || 8080);
@@ -11,7 +12,7 @@ app.use(express.json());
 // Do not expose pharmacy records on public hosting until record-level
 // authorization links each client record to its authenticated account.
 if (process.env.NODE_ENV === 'production') {
-  app.use(['/api/clients', '/api/prescription-status'], (req, res) => {
+  app.use('/api/clients', (req, res) => {
     res.status(403).json({ message: 'This feature is unavailable on the public demo.' });
   });
 }
@@ -62,12 +63,18 @@ app.get('/api/prescription-status', async (req, res, next) => {
   }
 
   try {
+    const user = await getAuthenticatedUser(pool, req);
+    if (!user) return res.status(401).json({ message: 'Please sign in to check your prescription.' });
+    if (firstName.toLowerCase() !== user.name.toLowerCase() || lastName.toLowerCase() !== user.last_name.toLowerCase()) {
+      return res.status(403).json({ message: 'You can only check the prescription associated with your account.' });
+    }
+    res.set('Cache-Control', 'no-store');
     const result = await pool.query(
       `SELECT name, last_name, prescription_ready
        FROM clients
        WHERE LOWER(name) = LOWER($1) AND LOWER(last_name) = LOWER($2)
        LIMIT 1`,
-      [firstName, lastName]
+      [user.name, user.last_name]
     );
 
     if (result.rowCount === 0) {
@@ -101,7 +108,7 @@ app.post('/api/clients', async (req, res, next) => {
   }
 });
 
-app.use('/api/users', require('./auth').createAuthRouter(pool));
+app.use('/api/users', createAuthRouter(pool));
 
 app.use((error, req, res, next) => {
   console.error(error);
