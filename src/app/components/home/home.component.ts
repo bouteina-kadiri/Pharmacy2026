@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
   imports: []
 })
 export class HomeComponent {
+  emblemLoaded = false;
+
   constructor(private router: Router) {}
 
   goToContact() {

@@ -29,7 +29,8 @@
   transition: transform 600ms ease, box-shadow 600ms ease;
 }
 .emblem-art { position: relative; width: 160px; height: 220px; overflow: hidden; transition: transform 600ms ease; }
-.emblem-art img { position: absolute; width: 400px; height: 400px; max-width: none; left: -120px; top: -90px; filter: invert(1); }
+.emblem-art img { position: absolute; width: 400px; height: 400px; max-width: none; left: -120px; top: -90px; filter: invert(1); opacity: 0; }
+.emblem-art img.loaded { opacity: 1; }
 .pharmacy-emblem:hover .emblem-art, .pharmacy-emblem:focus-visible .emblem-art { transform: translateY(-8px) rotate(-4deg); }
 .pharmacy-emblem:hover::before, .pharmacy-emblem:focus-visible::before { transform: scale(1.08); box-shadow: 0 0 90px #d3f3ff70; }
 .pharmacy-emblem:focus-visible { outline: 2px solid #fff; }

@@ -2,7 +2,9 @@
   <div class="hero-content">
     <div class="pharmacy-emblem" role="img" aria-label="Pharmacy snake and bowl" tabindex="0">
       <div class="emblem-art" aria-hidden="true">
-        <img src="assets/logoPH.webp" alt="" width="400" height="400" />
+        <img src="assets/logoPH.webp" alt="" width="400" height="400"
+          decoding="sync" fetchpriority="high" [class.loaded]="emblemLoaded"
+          (load)="emblemLoaded = true" />
       </div>
     </div>
     <h1>Ours Wellness Pharmacy</h1>
