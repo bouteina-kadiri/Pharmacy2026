@@ -24,7 +24,8 @@ app.get('/api/health', async (req, res) => {
     await pool.query('SELECT 1');
     res.json({ message: 'API and database are running!' });
   } catch (error) {
-    res.status(503).json({ message: 'Database is unavailable.', error: error.message });
+    console.error('Database health check failed:', error.message);
+    res.status(503).json({ message: 'Database is unavailable.' });
   }
 });
 
@@ -99,7 +100,7 @@ app.use((error, req, res, next) => {
   res.status(500).json({ message: 'Internal server error.' });
 });
 
-if (require.main === module) app.listen(PORT, '127.0.0.1', () => {
+if (require.main === module) app.listen(PORT, process.env.HOST || '0.0.0.0', () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });
 

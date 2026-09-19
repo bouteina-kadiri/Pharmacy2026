@@ -1,14 +1,15 @@
 :root {
   color-scheme: dark;
-  --page-bg: #000;
-  --surface: #171717;
-  --chrome-bg: #303030;
+  --page-bg: #3e6499;
+  --page-gradient: radial-gradient(ellipse at 50% 28%, #b4dcf055 0%, transparent 47%), linear-gradient(180deg, #74a6d5 0%, #5688c0 52%, #3e6499 100%);
+  --surface: #244b78;
+  --chrome-bg: #294e79;
   --text: #fff;
-  --muted: #c7c7c7;
-  --border: #555;
-  --action: #484848;
-  --action-hover: #606060;
-  --bs-body-bg: #000;
+  --muted: #d8e8f7;
+  --border: #89aed4;
+  --action: #185c9e;
+  --action-hover: #124a82;
+  --bs-body-bg: var(--page-bg);
   --bs-body-color: #fff;
   --bs-link-color: #fff;
   --bs-link-hover-color: #ddd;
@@ -19,8 +20,8 @@ a { color: var(--text); }
 a:hover { color: #ddd; }
 input, textarea, select { background: var(--surface); color: var(--text); border-color: var(--border); }
 input::placeholder, textarea::placeholder { color: var(--muted); }
-input:autofill { -webkit-text-fill-color: #fff; box-shadow: 0 0 0 1000px #171717 inset; }
-.hero { display: grid; place-items: center; text-align: center; min-height: calc(100vh - 140px); padding: 64px 24px; background: #000; color: #fff; }
+input:autofill { -webkit-text-fill-color: #fff; box-shadow: 0 0 0 1000px var(--surface) inset; }
+.hero { display: grid; place-items: center; text-align: center; min-height: calc(100vh - 140px); padding: 64px 24px; background: var(--page-gradient); color: #fff; }
 .hero-content { width: min(100%, 880px); }
 .hero h1 { font-size: clamp(34px, 5vw, 64px); font-weight: 600; letter-spacing: -1.5px; color: #fff; margin: 0 0 24px; }
 .hero p { color: #fff; font-size: clamp(17px, 2vw, 22px); line-height: 1.7; }

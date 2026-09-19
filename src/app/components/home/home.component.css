@@ -2,7 +2,7 @@
 .hero {
   min-height: calc(100vh - 148px);
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 28%, #b4dcf055 0%, transparent 47%), linear-gradient(180deg, #74a6d5 0%, #5688c0 52%, #3e6499 100%);
+  background: var(--page-gradient);
 }
 .hero-content { position: relative; padding: 0 0 24px; }
 .hero h1 { font-size: clamp(32px, 4.5vw, 60px); text-shadow: 0 2px 18px #203e6240; }
@@ -16,6 +16,7 @@
   margin: 0 auto 32px;
   border-radius: 50%;
   outline-offset: 6px;
+  mix-blend-mode: screen;
   animation: emblem-arrive 3s ease-in-out;
 }
 .pharmacy-emblem::before {
@@ -27,7 +28,7 @@
   box-shadow: 0 0 70px #c2f1ff40;
   transition: transform 600ms ease, box-shadow 600ms ease;
 }
-.emblem-art { position: relative; width: 160px; height: 220px; overflow: hidden; mix-blend-mode: screen; transition: transform 600ms ease; }
+.emblem-art { position: relative; width: 160px; height: 220px; overflow: hidden; transition: transform 600ms ease; }
 .emblem-art img { position: absolute; width: 400px; height: 400px; max-width: none; left: -120px; top: -90px; filter: invert(1); }
 .pharmacy-emblem:hover .emblem-art, .pharmacy-emblem:focus-visible .emblem-art { transform: translateY(-8px) rotate(-4deg); }
 .pharmacy-emblem:hover::before, .pharmacy-emblem:focus-visible::before { transform: scale(1.08); box-shadow: 0 0 90px #d3f3ff70; }

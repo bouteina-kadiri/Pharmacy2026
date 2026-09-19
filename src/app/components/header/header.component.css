@@ -12,9 +12,9 @@
   border-bottom: 1px solid #ffffff24;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-.logo-container { display: block; position: relative; width: 48px; height: 60px; overflow: hidden; flex-shrink: 0; border-radius: 6px; }
+.logo-container { display: block; position: relative; width: 48px; height: 60px; overflow: hidden; flex-shrink: 0; border-radius: 6px; mix-blend-mode: screen; }
 /* Crop the original white margins in the layout; preserve the source image. */
-.logo { display: block; position: absolute; width: 128px; height: 128px; max-width: none; left: -40px; top: -34px; filter: invert(1); mix-blend-mode: screen; }
+.logo { display: block; position: absolute; width: 128px; height: 128px; max-width: none; left: -40px; top: -34px; filter: invert(1); }
 .nav-links { display: flex; align-items: center; gap: clamp(4px, 1.4vw, 24px); list-style: none; margin: 0; padding: 0; }
 .nav-links li { font-size: 13px; font-weight: 400; }
 .nav-links a {
