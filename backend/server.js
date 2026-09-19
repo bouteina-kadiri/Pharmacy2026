@@ -8,6 +8,14 @@ const PORT = Number(process.env.PORT || 8080);
 app.use(cors({ origin: ['http://localhost:4200', 'http://localhost:4201', 'http://127.0.0.1:4200', 'http://127.0.0.1:4201'], credentials: true }));
 app.use(express.json());
 
+// Do not expose pharmacy records on public hosting until record-level
+// authorization links each client record to its authenticated account.
+if (process.env.NODE_ENV === 'production') {
+  app.use(['/api/clients', '/api/prescription-status'], (req, res) => {
+    res.status(403).json({ message: 'This feature is unavailable on the public demo.' });
+  });
+}
+
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'Backend is running!' });
