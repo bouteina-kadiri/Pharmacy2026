@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:my-angular-app": "node dist/my-angular-app/server/server.mjs",
+    "serve:ssr:pharmacy-bouzoubaa": "node dist/pharmacy-bouzoubaa/server/server.mjs",
     "build:hosting": "ng build --configuration production,hosting",
     "configure:hosting": "node scripts/configure-hosting.cjs"
   },

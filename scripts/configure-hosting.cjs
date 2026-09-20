@@ -8,7 +8,7 @@ const root = join(__dirname, '..');
 writeFileSync(join(root, 'vercel.json'), JSON.stringify({
   framework: null,
   buildCommand: 'npm run build:hosting',
-  outputDirectory: 'dist/my-angular-app/browser',
+  outputDirectory: 'dist/pharmacy-bouzoubaa/browser',
   rewrites: [
     { source: '/api/:path*', destination: `${origin.origin}/api/:path*` },
     { source: '/(.*)', destination: '/index.html' }

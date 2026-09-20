@@ -15,7 +15,7 @@ The deployable repository is Pharmacy2026 (this directory). Its active API is
    `API_ORIGIN=https://YOUR-API.onrender.com npm run configure:hosting`
    Commit the generated `vercel.json`; it contains only the public API hostname.
 4. Import the repository into Vercel, use Node 22, build command
-   `npm run build:hosting`, and output `dist/my-angular-app/browser`.
+   `npm run build:hosting`, and output `dist/pharmacy-bouzoubaa/browser`.
    The configuration proxies `/api/*` to Render and serves Angular routes.
 5. Test sign-up, login, refresh on `/login`, `/api/users/me`, logout, and
    `/api/health` using the Vercel URL. Cookies stay on the frontend host.
