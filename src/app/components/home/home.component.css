@@ -19,35 +19,41 @@ h1 { margin: 0; font-size: clamp(42px, 5.4vw, 76px); line-height: 1.02; letter-s
 .contact-button { border: 0; border-radius: 999px; padding: 15px 24px; color: #fff; background: #0b8fc5; font-weight: 750; box-shadow: 0 12px 30px #0b8fc53b; transition: transform 180ms ease, box-shadow 180ms ease; }
 .contact-button:hover { transform: translateY(-2px); box-shadow: 0 16px 36px #0b8fc550; }
 .contact-button:focus-visible { outline: 3px solid #183f58; outline-offset: 3px; }
-.portrait-stage { position: relative; min-height: 540px; display: grid; place-items: center; }
+.portrait-stage { position: relative; min-height: 540px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; }
 .portrait-stage::before { content: ''; position: absolute; inset: 3% 8% 7%; border-radius: 44% 56% 48% 52% / 57% 43% 57% 43%; background: linear-gradient(145deg, #15a9e9, #087cb8); box-shadow: 0 28px 80px #1168933b; transform: rotate(3deg); }
 .portrait-stage::after { content: ''; position: absolute; inset: 14% 0 0 19%; border: 1px solid #ffffff9c; border-radius: 48% 52% 40% 60%; transform: rotate(-8deg); }
 .portrait-frame { position: relative; z-index: 1; width: min(330px, 68vw); aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: #e8f6fb; box-shadow: 0 0 0 14px #ffffff3d; overflow: hidden; }
 .portrait-halo { position: absolute; inset: 0; background: radial-gradient(circle at 50% 25%, #fff 0, #dff3fa 58%, #a9dceb 100%); }
 .portrait-frame img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; image-rendering: auto; transform: scale(1.015); }
-.owner-card { position: absolute; z-index: 3; display: flex; align-items: center; border: 1px solid #ffffffc7; background: #fffffff0; box-shadow: 0 16px 45px #1f587832; backdrop-filter: blur(12px); }
-.owner-card { left: -5%; bottom: 14%; gap: 12px; padding: 15px 18px; border-radius: 14px; }
+.portrait-cards { position: relative; z-index: 3; display: flex; justify-content: center; gap: 12px; width: 100%; }
+.owner-card, .vision-card { display: flex; align-items: center; border: 1px solid #ffffffc7; border-radius: 14px; background: #fffffff0; box-shadow: 0 16px 45px #1f587832; backdrop-filter: blur(12px); }
+.owner-card { gap: 12px; padding: 15px 18px; }
 .owner-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: #fff; background: #0b91c8; font-size: 18px; }
-.owner-card strong, .owner-card span { display: block; }
+.owner-card strong, .owner-card span, .vision-card strong, .vision-card span { display: block; }
 .owner-card strong { color: #17374a; }
-.owner-card div > span { color: #687a84; font-size: 13px; }
+.owner-card div > span, .vision-card span { color: #687a84; font-size: 13px; }
+.vision-card { flex-direction: column; align-items: flex-start; justify-content: center; padding: 13px 18px; }
+.vision-card strong { color: #0a85b8; font-size: 17px; }
 @media (max-width: 900px) {
   .owner-hero { grid-template-columns: 1fr; gap: 26px; padding-top: 34px; text-align: center; overflow: visible; }
   .portrait-stage { order: -1; min-height: 430px; width: min(580px, 100%); margin: 0 auto; }
   .portrait-frame { width: min(290px, 64vw); }
   .hero-copy, .intro, .launch-note, .credentials { margin-left: auto; margin-right: auto; }
   .launch-note, .credentials { text-align: left; }
-  .owner-card { left: 3%; bottom: 8%; }
 }
 @media (max-width: 560px) {
   .owner-hero { gap: 18px; padding: 22px 16px 64px; }
   .portrait-stage { min-height: 335px; }
   .portrait-stage::before { inset: 5% 10% 8%; }
   .portrait-frame { width: min(215px, 62vw); box-shadow: 0 0 0 9px #ffffff3d; }
-  .owner-card { left: 0; bottom: 1%; gap: 8px; padding: 10px 12px; }
+  .portrait-cards { gap: 8px; }
+  .owner-card { gap: 8px; padding: 10px 12px; }
   .owner-icon { width: 32px; height: 32px; }
   .owner-card strong { font-size: 13px; }
   .owner-card div > span { max-width: 145px; font-size: 11px; }
+  .vision-card { padding: 9px 11px; }
+  .vision-card strong { font-size: 14px; }
+  .vision-card span { max-width: 120px; font-size: 10px; }
   h1 { font-size: 38px; }
   .credential-list { grid-template-columns: 1fr; }
 }
